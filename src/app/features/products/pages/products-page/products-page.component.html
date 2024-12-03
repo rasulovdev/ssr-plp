@@ -1,35 +1,46 @@
 <header
-  class="relative space-y-5 overflow-clip rounded-md bg-black p-4 text-center sm:p-6 md:p-12 lg:p-20"
+  class="relative space-y-5 overflow-clip rounded-xl bg-black p-4 text-center sm:p-6 md:p-12 lg:p-20"
 >
   <img
     ngSrc="/hero.webp"
     fill
     priority
     alt="hoodini."
-    class="object-cover opacity-70 transition-all"
+    class="object-cover opacity-70"
   />
 
   <h1 class="relative !mt-0 text-5xl font-extrabold text-white md:text-6xl">
     hoodini.
   </h1>
 
-  <input
-    type="search"
-    class="mx-auto block w-full rounded-md bg-white/30 px-5 py-3 text-lg text-white/90 outline-none backdrop-blur transition-shadow placeholder:text-white/40 md:w-1/2"
-    placeholder="Search..."
-    [formControl]="searchQueryControl"
-  />
+  @defer (hydrate on interaction) {
+    <app-search-field />
+  }
 </header>
 
-<section class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+@defer (hydrate on hover) {
+  <app-category-filter />
+}
+
+<section class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
   @for (product of products(); track product.id) {
     <app-products-list-item
       [product]="product"
       (addToCart)="addToCart($event)"
     ></app-products-list-item>
   } @empty {
-    <span class="col-span-4 inline-block text-center text-lg text-neutral-500">
-      Nothing's found. Try different query.
-    </span>
+    @if (title()) {
+      <span
+        class="col-span-4 inline-block text-center text-lg text-neutral-500"
+      >
+        Nothing's found. Try different query.
+      </span>
+    }
   }
 </section>
+
+@defer (hydrate on viewport) {
+  @if (products().length) {
+    <app-paginator [items]="products()" [limit]="limit()" />
+  }
+}

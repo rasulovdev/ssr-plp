@@ -1,0 +1,20 @@
+@let styles =
+  'rounded-md px-4 py-2 hover:bg-neutral-100 disabled:pointer-events-none disabled:opacity-50';
+
+<button
+  type="button"
+  [class]="styles"
+  [disabled]="offset()! < limit()"
+  (click)="previousPage()"
+>
+  prev
+</button>
+
+<button
+  type="button"
+  [class]="styles"
+  [disabled]="items().length < limit()"
+  (click)="nextPage()"
+>
+  next
+</button>

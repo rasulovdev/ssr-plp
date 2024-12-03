@@ -1,5 +1,6 @@
-export type Filter = Partial<{
-  limit: number
-  offset: number
-  title: string
-}>
+export type Filter = {
+  limit?: number
+  offset?: number
+  title?: string
+  categoryId?: number
+}

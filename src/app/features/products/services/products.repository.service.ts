@@ -12,8 +12,18 @@ export class ProductsRepositoryService {
   public get(filter?: Filter): QueryRef<Response> {
     return this._http.watchQuery<Response>({
       query: gql`
-        query Products($limit: Int, $offset: Int, $title: String) {
-          products(limit: $limit, offset: $offset, title: $title) {
+        query Products(
+          $limit: Int
+          $offset: Int
+          $title: String
+          $categoryId: Float
+        ) {
+          products(
+            limit: $limit
+            offset: $offset
+            title: $title
+            categoryId: $categoryId
+          ) {
             id
             title
             price
@@ -21,7 +31,7 @@ export class ProductsRepositoryService {
           }
         }
       `,
-      variables: filter,
+      variables: filter
     })
   }
 }
