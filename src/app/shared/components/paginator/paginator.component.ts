@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +11,6 @@ import { injectQueryParams } from 'ngxtension/inject-query-params'
 @Component({
   selector: 'app-paginator',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './paginator.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex justify-center' }
