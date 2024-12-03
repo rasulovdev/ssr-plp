@@ -4,16 +4,16 @@ import {
   Component,
   effect,
   inject,
-  NgZone,
   numberAttribute,
+  PendingTasks,
   signal
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ReactiveFormsModule } from '@angular/forms'
 import { Meta } from '@angular/platform-browser'
-import { Router } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { injectQueryParams } from 'ngxtension/inject-query-params'
-import { map } from 'rxjs'
+import { map, of, switchMap, tap } from 'rxjs'
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component'
 import { ProductsListItemComponent } from '../../components/products-list-item/products-list-item.component'
 import { SearchFieldComponent } from '../../components/search-field/search-field.component'
@@ -29,17 +29,18 @@ import { ProductsRepositoryService } from '../../services/products.repository.se
     NgOptimizedImage,
     PaginatorComponent,
     CategoryFilterComponent,
-    SearchFieldComponent
+    SearchFieldComponent,
+    RouterLink
   ],
   templateUrl: './products-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block py-8 space-y-6 md:space-y-8' }
+  host: { class: 'block py-4 xl:py-12 space-y-6 md:space-y-8' }
 })
 export default class ProductsPageComponent {
   private readonly _meta = inject(Meta)
   private readonly _repository = inject(ProductsRepositoryService)
   private readonly _router = inject(Router)
-  private readonly _ngZone = inject(NgZone)
+  private readonly _pendingTasks = inject(PendingTasks)
 
   public readonly title = injectQueryParams('title')
   public readonly limit = signal(16)
@@ -57,11 +58,19 @@ export default class ProductsPageComponent {
     title: this.title() ?? undefined,
     categoryId: this.categoryId() ?? undefined,
     limit: this.limit(),
-    offset: this.offset()!
+    offset: this.offset() ?? undefined
   })
 
   public readonly products = toSignal(
-    this.productsQuery.valueChanges.pipe(map(({ data }) => data.products)),
+    of(this._pendingTasks.add()).pipe(
+      switchMap(cleanup => {
+        return this.productsQuery.valueChanges.pipe(
+          map(({ data }) => [data.products, cleanup] as const)
+        )
+      }),
+      tap(([, cleanup]) => cleanup()),
+      map(([products]) => products)
+    ),
     { initialValue: [] }
   )
 
@@ -69,14 +78,12 @@ export default class ProductsPageComponent {
     effect(() => {
       this.title()
       this.categoryId()
-      this._router.navigate([], {
-        queryParams: { offset: null },
-        queryParamsHandling: 'merge'
-      })
+
+      this._restPagination()
     })
 
     effect(() => {
-      this.productsQuery.refetch({
+      this.productsQuery.setVariables({
         title: this.title() ?? undefined,
         categoryId: this.categoryId() ?? undefined,
         limit: this.limit(),
@@ -93,6 +100,13 @@ export default class ProductsPageComponent {
   }
 
   public addToCart(id: string): void {
-    alert(id)
+    alert(`Product with ID ${id} added to cart`)
+  }
+
+  private _restPagination(): void {
+    this._router.navigate([], {
+      queryParams: { offset: null },
+      queryParamsHandling: 'merge'
+    })
   }
 }

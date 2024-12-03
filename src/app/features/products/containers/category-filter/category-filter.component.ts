@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  PendingTasks
+} from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
 import { injectQueryParams } from 'ngxtension/inject-query-params'
-import { filter, map } from 'rxjs'
+import { map, of, switchMap, tap } from 'rxjs'
 import { CategoriesRepositoryService } from '../../services/categories.repository.service'
 
 @Component({
@@ -15,14 +20,20 @@ import { CategoriesRepositoryService } from '../../services/categories.repositor
 export class CategoryFilterComponent {
   private readonly _categoriesRepository = inject(CategoriesRepositoryService)
   private readonly _router = inject(Router)
+  private readonly _pendingTasks = inject(PendingTasks)
 
   public readonly categoryId = injectQueryParams('categoryId')
   public readonly categoriesQuery = this._categoriesRepository.get()
 
   public readonly categories = toSignal(
-    this.categoriesQuery.valueChanges.pipe(
-      filter(request => !request.loading && !!request.data.categories.length),
-      map(({ data }) => [{ id: null, name: 'All' }, ...data.categories])
+    of(this._pendingTasks.add()).pipe(
+      switchMap(cleanup => {
+        return this.categoriesQuery.valueChanges.pipe(
+          map(request => [request, cleanup] as const)
+        )
+      }),
+      tap(([, cleanup]) => cleanup()),
+      map(([{ data }]) => [{ id: null, name: 'All' }, ...data.categories])
     )
   )
 

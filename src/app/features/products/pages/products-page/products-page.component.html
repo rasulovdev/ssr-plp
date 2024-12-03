@@ -1,5 +1,5 @@
 <header
-  class="relative space-y-5 overflow-clip rounded-xl bg-black p-4 text-center sm:p-6 md:p-12 lg:p-20"
+  class="relative space-y-5 overflow-clip rounded-lg bg-black p-4 text-center sm:p-6 md:p-12 lg:p-20"
 >
   <img
     ngSrc="/hero.webp"
@@ -9,11 +9,13 @@
     class="object-cover opacity-70"
   />
 
-  <h1 class="relative !mt-0 text-5xl font-extrabold text-white md:text-6xl">
-    hoodini.
-  </h1>
+  <a routerLink="/" class="relative">
+    <h1 class="!mt-0 text-5xl font-extrabold text-white md:text-6xl">
+      hoodini.
+    </h1>
+  </a>
 
-  @defer (hydrate on interaction) {
+  @defer (hydrate on hover) {
     <app-search-field />
   }
 </header>
@@ -22,24 +24,26 @@
   <app-category-filter />
 }
 
-<section class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
-  @for (product of products(); track product.id) {
-    <app-products-list-item
-      [product]="product"
-      (addToCart)="addToCart($event)"
-    ></app-products-list-item>
-  } @empty {
-    @if (title()) {
+@defer (hydrate on idle) {
+  <section
+    class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4"
+  >
+    @for (product of products(); track product.id) {
+      <app-products-list-item
+        [product]="product"
+        (addToCart)="addToCart($event)"
+      ></app-products-list-item>
+    } @empty {
       <span
         class="col-span-4 inline-block text-center text-lg text-neutral-500"
       >
-        Nothing's found. Try different query.
+        Nothing's found.
       </span>
     }
-  }
-</section>
+  </section>
+}
 
-@defer (hydrate on viewport) {
+@defer (hydrate on idle) {
   @if (products().length) {
     <app-paginator [items]="products()" [limit]="limit()" />
   }

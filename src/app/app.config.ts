@@ -4,7 +4,7 @@ import {
   inject,
   isDevMode,
   makeStateKey,
-  provideZoneChangeDetection,
+  provideExperimentalZonelessChangeDetection,
   TransferState
 } from '@angular/core'
 import {
@@ -22,7 +22,7 @@ const APOLLO_STATE_KEY = makeStateKey<NormalizedCacheObject>('apollo.state')
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(withFetch()),
