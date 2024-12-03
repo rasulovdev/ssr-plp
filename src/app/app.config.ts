@@ -47,7 +47,7 @@ export const appConfig: ApplicationConfig = {
         link: httpLink.create({
           uri: isDevMode()
             ? 'http://localhost:3001/graphql'
-            : 'http://fake-ecommerce-api-5oof.onrender.com/graphql'
+            : 'https://fake-ecommerce-api-5oof.onrender.com/graphql'
         }),
         cache
       }
