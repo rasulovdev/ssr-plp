@@ -12,10 +12,11 @@ import {
   withEventReplay,
   withIncrementalHydration
 } from '@angular/platform-browser'
-import { provideRouter } from '@angular/router'
+import { provideRouter, withPreloading } from '@angular/router'
 import { InMemoryCache, NormalizedCacheObject } from '@apollo/client/core'
 import { provideApollo } from 'apollo-angular'
 import { HttpLink } from 'apollo-angular/http'
+import { hoverPrefetchProviders, HoverPreloadStrategy } from 'ngx-hover-preload'
 import { routes } from './app.routes'
 
 const APOLLO_STATE_KEY = makeStateKey<NormalizedCacheObject>('apollo.state')
@@ -23,7 +24,8 @@ const APOLLO_STATE_KEY = makeStateKey<NormalizedCacheObject>('apollo.state')
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(routes),
+    hoverPrefetchProviders,
+    provideRouter(routes, withPreloading(HoverPreloadStrategy)),
     provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(withFetch()),
     provideApollo(() => {

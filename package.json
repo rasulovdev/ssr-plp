@@ -25,6 +25,7 @@
     "apollo-angular": "^8.0.0",
     "express": "^4.18.2",
     "graphql": "^16",
+    "ngx-hover-preload": "^0.0.5",
     "ngxtension": "^4.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"

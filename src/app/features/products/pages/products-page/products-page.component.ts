@@ -1,4 +1,3 @@
-import { NgOptimizedImage } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,15 +8,14 @@ import {
   signal
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
-import { ReactiveFormsModule } from '@angular/forms'
 import { Meta } from '@angular/platform-browser'
-import { Router, RouterLink } from '@angular/router'
+import { Router } from '@angular/router'
 import { injectQueryParams } from 'ngxtension/inject-query-params'
 import { map, of, switchMap, tap } from 'rxjs'
+import { CategoryFilterComponent } from '../../../../layout/components/category-filter/category-filter.component'
+import { ListHeaderComponent } from '../../../../layout/components/list-header/list-header.component'
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component'
 import { ProductsListItemComponent } from '../../components/products-list-item/products-list-item.component'
-import { SearchFieldComponent } from '../../components/search-field/search-field.component'
-import { CategoryFilterComponent } from '../../containers/category-filter/category-filter.component'
 import { ProductsRepositoryService } from '../../services/products.repository.service'
 
 @Component({
@@ -25,16 +23,13 @@ import { ProductsRepositoryService } from '../../services/products.repository.se
   standalone: true,
   imports: [
     ProductsListItemComponent,
-    ReactiveFormsModule,
-    NgOptimizedImage,
     PaginatorComponent,
     CategoryFilterComponent,
-    SearchFieldComponent,
-    RouterLink
+    ListHeaderComponent
   ],
   templateUrl: './products-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block py-4 xl:py-12 space-y-6 md:space-y-8' }
+  host: { class: 'block space-y-6 md:space-y-8' }
 })
 export default class ProductsPageComponent {
   private readonly _meta = inject(Meta)
@@ -79,7 +74,7 @@ export default class ProductsPageComponent {
       this.title()
       this.categoryId()
 
-      this._restPagination()
+      this._resetPagination()
     })
 
     effect(() => {
@@ -103,7 +98,7 @@ export default class ProductsPageComponent {
     alert(`Product with ID ${id} added to cart`)
   }
 
-  private _restPagination(): void {
+  private _resetPagination(): void {
     this._router.navigate([], {
       queryParams: { offset: null },
       queryParamsHandling: 'merge'

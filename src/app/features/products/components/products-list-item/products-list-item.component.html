@@ -4,12 +4,10 @@
   height="275"
   [alt]="product().title"
   class="w-full rounded-lg bg-neutral-100"
+  [loaderParams]="{ size: 'm' }"
 />
 
-<a
-  [routerLink]="['products', product().id]"
-  class="block before:absolute before:inset-0"
->
+<a [routerLink]="product().id" class="block before:absolute before:inset-0">
   <h2 class="line-clamp-1 text-lg font-semibold">{{ product().title }}</h2>
 </a>
 
