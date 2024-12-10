@@ -1,0 +1,16 @@
+<ul class="flex items-center gap-2 text-neutral-500">
+  <li><a routerLink="/products" class="hover:text-black">Home</a></li>
+  <li class="text-sm">/</li>
+  <li>
+    <a
+      routerLink="/products"
+      [queryParams]="{ categoryId: product().category.id }"
+      queryParamsHandling="merge"
+      class="hover:text-black"
+    >
+      {{ product().category.name }}
+    </a>
+  </li>
+  <li class="text-sm">/</li>
+  <li>{{ product().title }}</li>
+</ul>

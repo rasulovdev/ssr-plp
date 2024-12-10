@@ -1,0 +1,14 @@
+@for (category of categories(); track category.id) {
+  <a
+    [routerLink]="asNavigation() ? '/products' : '.'"
+    [queryParams]="{ categoryId: category.id ? +category.id : null }"
+    queryParamsHandling="merge"
+    class="rounded-md px-4 py-2 hover:bg-neutral-100"
+    [class.bg-neutral-100]="
+      (categoryId() != null && categoryId() === category.id) ||
+      (isProductsPage && categoryId() == category.id)
+    "
+  >
+    {{ category.name }}
+  </a>
+}

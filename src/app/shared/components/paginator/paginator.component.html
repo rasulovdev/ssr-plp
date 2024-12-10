@@ -1,0 +1,22 @@
+@let styles =
+  'rounded-md px-4 py-2 hover:bg-neutral-100 [&[aria-disabled="true"]]:pointer-events-none [&[aria-disabled="true"]]:opacity-50';
+
+<a
+  routerLink="."
+  [queryParams]="{ offset: offset()! - limit() || null }"
+  queryParamsHandling="merge"
+  [class]="styles"
+  [attr.aria-disabled]="offset()! < limit()"
+>
+  prev
+</a>
+
+<a
+  routerLink="."
+  [class]="styles"
+  [queryParams]="{ offset: offset()! + limit() }"
+  queryParamsHandling="merge"
+  [attr.aria-disabled]="items().length < limit()"
+>
+  next
+</a>
