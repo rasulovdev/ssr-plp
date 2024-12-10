@@ -2,7 +2,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http'
 import {
   ApplicationConfig,
   inject,
-  isDevMode,
   makeStateKey,
   provideExperimentalZonelessChangeDetection,
   TransferState
@@ -47,9 +46,7 @@ export const appConfig: ApplicationConfig = {
 
       return {
         link: httpLink.create({
-          uri: isDevMode()
-            ? 'http://localhost:3001/graphql'
-            : 'https://fake-ecommerce-api-5oof.onrender.com/graphql'
+          uri: 'https://fake-ecommerce-api-5oof.onrender.com/graphql'
         }),
         cache
       }

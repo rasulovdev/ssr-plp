@@ -3,7 +3,60 @@
 }
 
 @if (productQueryResult()?.loading) {
-  LOADING...
+  <ul class="flex items-center gap-2">
+    <li class="h-4 w-12 animate-pulse rounded bg-neutral-200"></li>
+    <li class="text-sm text-neutral-300">/</li>
+    <li class="h-4 w-12 animate-pulse rounded bg-neutral-200"></li>
+    <li class="text-sm text-neutral-300">/</li>
+    <li class="h-4 w-52 animate-pulse rounded bg-neutral-200"></li>
+  </ul>
+
+  <div class="grid gap-8 md:grid-cols-2">
+    <div class="flex grid-cols-2 flex-col-reverse gap-4 lg:flex-row">
+      <div class="flex shrink-0 gap-4 lg:flex-col">
+        @for (item of [1, 2, 3]; track $index) {
+          <div
+            class="relative block aspect-square w-12 animate-pulse overflow-clip rounded-lg bg-neutral-200 ring-black ring-offset-2 md:w-20"
+          ></div>
+        }
+      </div>
+
+      <div
+        class="relative aspect-square w-full animate-pulse overflow-clip rounded-lg bg-neutral-200"
+      ></div>
+    </div>
+
+    <div class="space-y-5">
+      <div class="pulse h-10 w-96 animate-pulse rounded bg-neutral-200"></div>
+      <div class="pulse h-4 w-12 animate-pulse rounded bg-neutral-200"></div>
+
+      <div class="space-y-4">
+        <div
+          class="pulse h-3.5 w-full animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-[550px] animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-[450px] animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-96 animate-pulse rounded bg-neutral-200"
+        ></div>
+      </div>
+
+      <div class="flex items-center gap-5">
+        <div class="flex flex-col">
+          <div class="animate-pulse space-y-2">
+            <div class="h-4 w-12 rounded bg-neutral-200"></div>
+            <div class="h-6 w-20 rounded bg-neutral-200"></div>
+          </div>
+        </div>
+
+        <div class="h-12 w-36 rounded-md bg-neutral-200"></div>
+      </div>
+    </div>
+  </div>
 } @else if (productQueryResult()?.data?.product) {
   @defer (hydrate on hover) {
     <nav app-breadcrumbs [product]="productQueryResult()!.data.product"></nav>
@@ -60,6 +113,61 @@
         >
           Add to cart
         </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <ul class="flex items-center gap-2">
+    <li class="h-4 w-12 animate-pulse rounded bg-neutral-200"></li>
+    <li class="text-sm text-neutral-300">/</li>
+    <li class="h-4 w-12 animate-pulse rounded bg-neutral-200"></li>
+    <li class="text-sm text-neutral-300">/</li>
+    <li class="h-4 w-52 animate-pulse rounded bg-neutral-200"></li>
+  </ul>
+
+  <div class="grid gap-8 md:grid-cols-2">
+    <div class="flex grid-cols-2 flex-col-reverse gap-4 lg:flex-row">
+      <div class="flex shrink-0 gap-4 lg:flex-col">
+        @for (item of [1, 2, 3]; track $index) {
+          <div
+            class="relative block aspect-square w-12 animate-pulse overflow-clip rounded-lg bg-neutral-200 ring-black ring-offset-2 md:w-20"
+          ></div>
+        }
+      </div>
+
+      <div
+        class="relative aspect-square w-full animate-pulse overflow-clip rounded-lg bg-neutral-200"
+      ></div>
+    </div>
+
+    <div class="space-y-5">
+      <div class="pulse h-10 w-96 animate-pulse rounded bg-neutral-200"></div>
+      <div class="pulse h-4 w-12 animate-pulse rounded bg-neutral-200"></div>
+
+      <div class="space-y-4">
+        <div
+          class="pulse h-3.5 w-full animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-[550px] animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-[450px] animate-pulse rounded bg-neutral-200"
+        ></div>
+        <div
+          class="pulse h-3.5 w-96 animate-pulse rounded bg-neutral-200"
+        ></div>
+      </div>
+
+      <div class="flex items-center gap-5">
+        <div class="flex flex-col">
+          <div class="animate-pulse space-y-2">
+            <div class="h-4 w-12 rounded bg-neutral-200"></div>
+            <div class="h-6 w-20 rounded bg-neutral-200"></div>
+          </div>
+        </div>
+
+        <div class="h-12 w-36 rounded-md bg-neutral-200"></div>
       </div>
     </div>
   </div>
